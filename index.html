@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Run character</title>
+<style>
+  body {
+    font-family: sans-serif;
+    background: #f5f5f5;
+    text-align: center;
+    padding-top: 40px;
+  }
+
+  #runner {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    position: relative;
+  }
+
+  #runner img {
+    width: 100%;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    display: none;
+  }
+
+  .speed-btns button {
+    margin: 0 6px;
+    padding: 6px 14px;
+    border: none;
+    background: #333;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .speed-btns button.active {
+    background: #ff5757;
+  }
+
+  #toggle {
+    margin-top: 16px;
+    padding: 6px 16px;
+    background: #10b981;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+</style>
+</head>
+<body>
+
+<h2>Run character</h2>
+
+<div class="speed-btns">
+  <button data-speed="300" class="active">느림</button>
+  <button data-speed="180">보통</button>
+  <button data-speed="100">빠름</button>
+  <button data-speed="50">몹시 빠름</button>
+  <button id="toggle">멈추기</button>
+</div>
+
+<div id="runner">
+  <img id="f1" src="run1.png" style="display:block;">
+  <img id="f2" src="run2.png">
+</div>
+
+<script>
+let f1 = document.getElementById("f1");
+let f2 = document.getElementById("f2");
+let toggleBtn = document.getElementById("toggle");
+let speedBtns = document.querySelectorAll(".speed-btns button");
+
+let showing = 1;
+let running = true;
+let delay = 300;
+
+let timer = setInterval(frameSwitch, delay);
+
+function frameSwitch() {
+  if (!running) return;
+  if (showing === 1) {
+    f1.style.display = "none";
+    f2.style.display = "block";
+    showing = 2;
+  } else {
+    f1.style.display = "block";
+    f2.style.display = "none";
+    showing = 1;
+  }
+}
+
+// 속도 변경
+speedBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    delay = Number(btn.dataset.speed);
+
+    speedBtns.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    clearInterval(timer);
+    timer = setInterval(frameSwitch, delay);
+  });
+});
+
+// 멈추기 / 다시 시작
+toggleBtn.addEventListener("click", () => {
+  running = !running;
+  toggleBtn.textContent = running ? "멈추기" : "다시 달리기";
+});
+</script>
+
+</body>
+</html>
