@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>마우스 따라오는 캐릭터 템플릿</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #f5f7ff, #c8d6ff);
+    }
+
+    header {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 8px;
+      max-width: 360px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    h1 {
+      margin: 0 0 4px;
+      font-size: 16px;
+    }
+
+    #character {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #ffb347;
+      box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      text-align: center;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>마우스를 따라다니는 캐릭터 제목</h1>
+    <p>이 문장은 직접 바꿀 수 있는 설명 문구입니다.</p>
+    <p>마우스를 움직여 보세요. 동그란 캐릭터가 천천히 따라옵니다.</p>
+  </header>
+
+  <div id="character">더미 텍스트<br>바꿔보세요</div>
+
+  <script>
+    const charEl = document.getElementById("character");
+
+    // 화면 중앙에서 시작
+    let x = window.innerWidth / 2;
+    let y = window.innerHeight / 2;
+    let targetX = x;
+    let targetY = y;
+
+    function onMove(e) {
+      targetX = e.clientX;
+      targetY = e.clientY;
+    }
+
+    document.addEventListener("mousemove", onMove);
+
+    function loop() {
+      // 위치를 부드럽게 보간
+      const speed = 0.1; // 숫자를 바꾸면 따라오는 속도가 달라짐
+      x += (targetX - x) * speed;
+      y += (targetY - y) * speed;
+
+      charEl.style.transform = `translate(${x - 40}px, ${y - 40}px)`;
+
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  </script>
+</body>
+</html>

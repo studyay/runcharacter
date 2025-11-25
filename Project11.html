@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>네온 브러시 배경 템플릿</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: sans-serif;
+      min-height: 100vh;
+      background: #020617;
+      color: #e5e7eb;
+      overflow: hidden;
+    }
+
+    /* 네온 점을 그릴 캔버스 */
+    #canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    /* 내용 카드 */
+    .card {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+      margin: 40px auto;
+      padding: 24px 26px;
+      border-radius: 20px;
+      background: rgba(15, 23, 42, 0.9);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      font-size: 22px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 4px 0;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+
+  <div class="card">
+    <h1>네온 브러시 배경 페이지 제목</h1>
+    <p>마우스를 움직이면 배경에 네온 잉크가 뿌려집니다.</p>
+    <p>이 문장은 자유롭게 바꿀 수 있는 설명 문구입니다.</p>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    const dots = [];
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+
+    window.addEventListener("resize", resize);
+
+    document.addEventListener("mousemove", (e) => {
+      dots.push({
+        x: e.clientX,
+        y: e.clientY,
+        r: 0,
+        maxR: 40 + Math.random() * 30,
+        alpha: 0.6,
+        color: `hsl(${Math.random() * 360}, 90%, 60%)`
+      });
+    });
+
+    function draw() {
+      ctx.fillStyle = "rgba(2, 6, 23, 0.22)";
+      ctx.fillRect(0, 0, width, height);
+
+      for (let i = dots.length - 1; i >= 0; i--) {
+        const d = dots[i];
+        d.r += 1.5;
+        d.alpha -= 0.01;
+
+        if (d.alpha <= 0 || d.r > d.maxR) {
+          dots.splice(i, 1);
+          continue;
+        }
+
+        const gradient = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r);
+        gradient.addColorStop(0, `${d.color}`);
+        gradient.addColorStop(1, "transparent");
+
+        ctx.globalAlpha = d.alpha;
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  </script>
+</body>
+</html>

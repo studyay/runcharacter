@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>칭찬 폭탄 템플릿</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: sans-serif;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1e293b, #020617);
+      color: #e5e7eb;
+      overflow: hidden;
+    }
+
+    .center-box {
+      position: relative;
+      z-index: 1;
+      max-width: 420px;
+      margin: 40px auto;
+      padding: 24px 26px;
+      border-radius: 20px;
+      background: rgba(15, 23, 42, 0.95);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      font-size: 22px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 4px 0;
+    }
+
+    #btn {
+      margin-top: 14px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: none;
+      background: #22c55e;
+      color: #052e16;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .bubble {
+      position: fixed;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: rgba(34, 197, 94, 0.9);
+      color: #022c22;
+      pointer-events: none;
+      animation: floatUp 3s ease-out forwards;
+      white-space: nowrap;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-160px);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="center-box">
+    <h1>칭찬 폭탄 페이지 제목</h1>
+    <p>버튼을 누를 때마다 화면 곳곳에 칭찬이 떠다닙니다.</p>
+    <p>친구 이름, 자기 이름을 넣어서 “칭찬 폭탄 페이지”로 만들어보세요.</p>
+
+    <button id="btn">칭찬 폭탄 발사!</button>
+  </div>
+
+  <script>
+    const btn2 = document.getElementById("btn");
+
+    // 아이들이 바꿔도 되는 칭찬 문장들
+    const compliments = [
+      "오늘 멋지다!",
+      "아이디어가 반짝반짝 ✨",
+      "집중력 최고!",
+      "이 정도면 천재 아닌가요?",
+      "꾸준함이 진짜 장점이에요.",
+      "오, 이 페이지 주인공이군요!",
+      "상상력이 대박이에요.",
+      "하루하루 성장 중 💪",
+      "당신의 코드는 예술입니다 (?)"
+    ];
+
+    btn2.addEventListener("click", () => {
+      const text = compliments[Math.floor(Math.random() * compliments.length)];
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = text;
+
+      const x = Math.random() * (window.innerWidth - 120) + 20;
+      const y = Math.random() * (window.innerHeight - 120) + 60;
+
+      bubble.style.left = x + "px";
+      bubble.style.top = y + "px";
+
+      document.body.appendChild(bubble);
+
+      setTimeout(() => bubble.remove(), 3000);
+    });
+  </script>
+</body>
+</html>

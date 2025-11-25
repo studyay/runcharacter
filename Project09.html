@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>스포트라이트 비밀 페이지 템플릿</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: sans-serif;
+      min-height: 200vh;
+      background: #020617;
+      color: #e5e7eb;
+      position: relative;
+    }
+
+    /* 어두운 막 + 구멍(마우스 위치) */
+    #mask {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 20;
+      background: radial-gradient(circle at 50% 50%, transparent 120px, rgba(15, 23, 42, 0.96) 160px);
+      transition: background 0.08s;
+    }
+
+    header {
+      padding: 20px 24px;
+      position: sticky;
+      top: 0;
+      background: #020617;
+      z-index: 5;
+      border-bottom: 1px solid #1f2937;
+    }
+
+    header h1 {
+      margin-bottom: 4px;
+    }
+
+    header p {
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 24px;
+      padding-bottom: 80px;
+    }
+
+    section {
+      margin: 40px 0;
+      padding: 20px 24px;
+      border-radius: 16px;
+      background: #0f172a;
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6);
+    }
+
+    section h2 {
+      margin-bottom: 8px;
+    }
+
+    section p {
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 4px 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="mask"></div>
+
+  <header>
+    <h1>스포트라이트 비밀 페이지 제목</h1>
+    <p>마우스를 움직이면, 글자가 스포트라이트 안에서만 잘 보입니다.</p>
+    <p>아래 섹션의 제목과 내용을 아이들이 자유롭게 바꿔보세요.</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>첫 번째 비밀 이야기</h2>
+      <p>이 문장은 더미 텍스트입니다. 내가 좋아하는 것, 나만의 비밀을 적어도 좋습니다.</p>
+      <p>스포트라이트를 움직이며 천천히 읽어보세요.</p>
+    </section>
+
+    <section>
+      <h2>두 번째 비밀 이야기</h2>
+      <p>여기에는 앞으로 이루고 싶은 목표나 꿈을 적어보세요.</p>
+      <p>예: 그림책 작가, 디자이너, 프로그래머 등.</p>
+    </section>
+
+    <section>
+      <h2>세 번째 비밀 이야기</h2>
+      <p>마지막 섹션에는 오늘 만든 페이지에 대한 소감이나 친구들에게 전하고 싶은 말을 적어 보세요.</p>
+    </section>
+  </main>
+
+  <script>
+    const mask = document.getElementById("mask");
+
+    function updateMask(e) {
+      const x = e.clientX;
+      const y = e.clientY;
+      const size = 140; // 밝게 보이는 원 크기
+
+      mask.style.background = `radial-gradient(circle at ${x}px ${y}px, transparent ${size}px, rgba(15, 23, 42, 0.96) ${size + 40}px)`;
+    }
+
+    document.addEventListener("mousemove", updateMask);
+  </script>
+</body>
+</html>

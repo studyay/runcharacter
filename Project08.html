@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>스크롤 장면 이동형 게임 템플릿</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: sans-serif;
+      height: 3000px;
+      background: #0f172a;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* 전체 게임 월드 */
+    #world {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 3000px;
+      height: 100vh;
+      display: flex;
+      align-items: flex-end;
+      transition: transform 0.1s linear;
+    }
+
+    /* 땅 */
+    #ground {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 3000px;
+      height: 80px;
+      background: #1f2933;
+    }
+
+    /* 플레이어 이미지 */
+    #player {
+      position: fixed;
+      left: 80px;
+      bottom: 140px;
+      width: auto;
+      height: 180px;  /* ← 이미지 높이를 통일 (원하면 변경 가능) */
+      z-index: 10;
+      transform-origin: bottom center;
+    }
+
+    #player img {
+      height: 100%;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* 서브 캐릭터 기본틀 */
+    .character {
+      position: absolute;
+      bottom: 80px;
+      width: auto;
+      height: 300px;  /* ← 모든 서브 캐릭터 높이를 통일 */
+    }
+
+    .character img {
+      height: 100%;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .scene {
+      position: relative;
+      width: 600px;
+      height: 100vh;
+      padding-bottom: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .scene-box {
+      padding: 16px 20px;
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 12px;
+      max-width: 380px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 8px;
+    }
+
+    p {
+      font-size: 13px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 플레이어 (이미지 사용) -->
+  <div id="player">
+    <!-- ▼ 원하는 캐릭터 이미지로 바꿔도 됩니다 -->
+    <img src="player.png" alt="주인공 캐릭터">
+  </div>
+
+  <div id="world">
+    <div id="ground"></div>
+
+    <!-- 씬 1 -->
+    <div class="scene" style="background: linear-gradient(#0f172a, #1f2937);">
+      <div class="scene-box">
+        <h2>첫 번째 장면 제목</h2>
+        <p>여기에 이야기의 시작 장면을 써 보세요.</p>
+        <p>예: 주인공이 여행을 떠나기로 결심하는 장면입니다.</p>
+      </div>
+
+      <!-- 서브 캐릭터 -->
+      <div class="character" style="left: 250px;">
+        <!-- ▼ 이 이미지 역시 자유롭게 변경 가능합니다 -->
+        <img src="npc1.gif" alt="NPC 1">
+      </div>
+    </div>
+
+    <!-- 씬 2 -->
+    <div class="scene" style="background: linear-gradient(#1f2937, #312e81);">
+      <div class="scene-box">
+        <h2>두 번째 장면 제목</h2>
+        <p>스크롤을 내리면 배경이 옆으로 흐르며 새로운 장소가 등장합니다.</p>
+        <p>여기에 중간 장면 스토리를 넣어보세요.</p>
+      </div>
+
+      <div class="character" style="left: 200px;">
+        <!-- ▼ 다른 사진을 넣어도 높이 기준으로 맞춰집니다 -->
+        <img src="npc2.gif" alt="NPC 2">
+      </div>
+    </div>
+
+    <!-- 씬 3 -->
+    <div class="scene" style="background: linear-gradient(#312e81, #4c1d95);">
+      <div class="scene-box">
+        <h2>세 번째 장면 제목</h2>
+        <p>마지막으로 도착지에 도달하는 장면을 적을 수 있습니다.</p>
+        <p>예: 보물을 찾거나, 친구를 만나는 장면 등.</p>
+      </div>
+
+      <div class="character" style="left: 200px;">
+        <!-- ▼ 원하는 이미지로 대체 가능합니다 -->
+        <img src="npc3.gif" alt="NPC 3">
+      </div>
+    </div>
+
+    <!-- 씬 4 -->
+    <div class="scene" style="background: linear-gradient(#4c1d95, #6d28d9); margin-right: 700px;">
+      <div class="scene-box">
+        <h2>엔딩 장면 제목</h2>
+        <p>이 구역에는 엔딩 메시지나 다음 이야기를 예고하는 글을 넣어도 좋습니다.</p>
+        <p>직접 스토리를 바꾸면서 장면 이동 게임을 만들어 보세요.</p>
+      </div>
+
+      <div class="character" style="left: 200px;">
+        <!-- ▼ 자유롭게 교체 가능합니다 -->
+        <img src="npc4.gif" alt="NPC 4">
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const world = document.getElementById("world");
+  const player = document.getElementById("player");
+  const worldWidth = 3000;
+  const viewportWidth = window.innerWidth;
+
+  function updateWorldPosition() {
+    const maxScroll = document.body.scrollHeight - window.innerHeight || 1;
+    const progress = window.scrollY / maxScroll;
+    const maxOffset = worldWidth - viewportWidth;
+    const offsetX = -maxOffset * progress;
+    world.style.transform = `translateX(${offsetX}px)`;
+  }
+
+  // ▼ 주인공 캐릭터 흔들림 함수
+  function updatePlayerTilt() {
+    const angle = Math.sin(window.scrollY / 80) * 10; // -5° ~ +5°
+    player.style.transform = `rotate(${angle}deg)`;
+  }
+
+  // 이벤트 등록
+  window.addEventListener("scroll", () => {
+    updateWorldPosition();
+    updatePlayerTilt();
+  });
+
+  window.addEventListener("resize", updateWorldPosition);
+
+  // 초기 적용
+  updateWorldPosition();
+  updatePlayerTilt();
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>패럴럭스 스크롤 템플릿</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: sans-serif;
+      color: #fff;
+      height: 300vh; /* 스크롤 길이 확보 */
+      background: #020617;
+      overflow-x: hidden;
+    }
+
+    /* 레이어 3개: 가장 뒤, 중간, 앞 */
+    .layer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 120%;
+      height: 100vh;
+      pointer-events: none;
+    }
+
+    .layer.bg1 {
+      background: linear-gradient(#020617, #0f172a);
+      z-index: 1;
+    }
+
+    .layer.bg2 {
+      background-image: radial-gradient(circle, #1d4ed8 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.4;
+      z-index: 2;
+    }
+
+    .layer.bg3 {
+      background-image: radial-gradient(circle, #facc15 2px, transparent 2px);
+      background-size: 80px 80px;
+      opacity: 0.8;
+      z-index: 3;
+    }
+
+    /* 실제 콘텐츠 */
+    .content {
+      position: relative;
+      z-index: 4;
+      max-width: 800px;
+      margin: 0 auto;
+      padding-top: 20vh;
+    }
+
+    section {
+      margin-bottom: 40vh;
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 12px;
+      padding: 20px 24px;
+    }
+
+    h1, h2 {
+      margin-bottom: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 4px 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- 패럴럭스용 레이어 3개 -->
+  <div class="layer bg1"></div>
+  <div class="layer bg2"></div>
+  <div class="layer bg3"></div>
+
+  <!-- 실제 텍스트 콘텐츠 -->
+  <div class="content">
+    <section>
+      <h1>패럴럭스 스크롤 페이지 제목</h1>
+      <p>여기에 이야기의 첫 장면을 써보세요. 스크롤을 내리면 별과 배경이 서로 다른 속도로 움직입니다.</p>
+      <p>자유롭게 스토리나 설명을 바꿔보세요.</p>
+    </section>
+
+    <section>
+      <h2>두 번째 장면 제목</h2>
+      <p>이 구역을 두 번째 장면, 혹은 다른 정보 블록으로 사용할 수 있습니다.</p>
+      <p>패럴럭스 효과에 어울리는 우주 이야기, 모험 이야기 등을 적어보세요.</p>
+    </section>
+
+    <section>
+      <h2>세 번째 장면 제목</h2>
+      <p>마지막 장면이나 결론을 적는 구역입니다.</p>
+      <p>예: 오늘 만든 패럴럭스 페이지를 스크린샷 찍어서 친구들에게 소개해 보세요.</p>
+    </section>
+  </div>
+
+  <script>
+    const layer1 = document.querySelector(".bg1");
+    const layer2 = document.querySelector(".bg2");
+    const layer3 = document.querySelector(".bg3");
+
+    function onScroll() {
+      const scrollY = window.scrollY;
+
+      // 숫자를 바꾸면 레이어별 움직임 속도가 달라짐
+      layer1.style.transform = `translateY(${scrollY * 0.2}px)`;
+      layer2.style.transform = `translateY(${scrollY * 0.4}px)`;
+      layer3.style.transform = `translateY(${scrollY * 0.7}px)`;
+    }
+
+    window.addEventListener("scroll", onScroll);
+    onScroll();
+  </script>
+</body>
+</html>

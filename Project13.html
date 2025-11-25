@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>도망가는 버튼 템플릿</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .box {
+      max-width: 480px;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.94);
+      border-radius: 20px;
+      padding: 24px 28px 40px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      font-size: 22px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 4px 0;
+    }
+
+    #run-btn {
+      position: absolute;
+      left: 50%;
+      top: 70%;
+      transform: translate(-50%, -50%);
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: none;
+      background: #22c55e;
+      color: #082f49;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.1s;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>다가가면 도망가는 버튼 페이지 제목</h1>
+    <p>마우스를 가져가면 버튼이 살짝 도망갑니다.</p>
+    <p>아이들이 버튼 안의 문장을 바꿔보거나,  
+      위 설명 문구를 장난스럽게 바꾸어 놀 수 있습니다.</p>
+
+    <button id="run-btn">여기를 눌러보세요!</button>
+  </div>
+
+  <script>
+    const box = document.querySelector(".box");
+    const btn = document.getElementById("run-btn");
+
+    box.addEventListener("mousemove", (e) => {
+      const rect = box.getBoundingClientRect();
+      const bx = rect.left;
+      const by = rect.top;
+
+      const mouseX = e.clientX - bx;
+      const mouseY = e.clientY - by;
+
+      const btnRect = btn.getBoundingClientRect();
+      const btnX = btnRect.left - bx + btnRect.width / 2;
+      const btnY = btnRect.top - by + btnRect.height / 2;
+
+      const dx = mouseX - btnX;
+      const dy = mouseY - btnY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      const safeDistance = 80; // 이 거리 안에 오면 도망감
+
+      if (distance < safeDistance) {
+        let newLeft = parseFloat(btn.style.left || "50%");
+        let newTop = parseFloat(btn.style.top || "70%");
+
+        const moveX = (dx / distance) * 20;
+        const moveY = (dy / distance) * 20;
+
+        newLeft -= (moveX / rect.width) * 100;
+        newTop -= (moveY / rect.height) * 100;
+
+        newLeft = Math.min(85, Math.max(15, newLeft));
+        newTop = Math.min(85, Math.max(25, newTop));
+
+        btn.style.left = newLeft + "%";
+        btn.style.top = newTop + "%";
+      }
+    });
+  </script>
+</body>
+</html>

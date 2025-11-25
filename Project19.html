@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>타이머</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #0f172a, #020617);
+      color: #e5e7eb;
+      padding: 24px;
+    }
+
+    .timer-card {
+      width: 380px;
+      max-width: 100%;
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 20px;
+      padding: 22px 24px 26px;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.7);
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      text-align: center;
+      opacity: 0.85;
+      margin-bottom: 14px;
+    }
+
+    .preset-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .preset-buttons button {
+      border: none;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 13px;
+      cursor: pointer;
+      background: #1f2937;
+      color: #e5e7eb;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .preset-buttons button.active {
+      background: #22c55e;
+      color: #052e16;
+      transform: translateY(-1px);
+    }
+
+    .time-display {
+      text-align: center;
+      margin: 12px 0 8px;
+    }
+
+    .time-label {
+      font-size: 13px;
+      opacity: 0.8;
+      margin-bottom: 4px;
+    }
+
+    #time-text {
+      font-size: 40px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .progress-wrapper {
+      margin-top: 14px;
+      margin-bottom: 10px;
+    }
+
+    .progress-back {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: #020617;
+      overflow: hidden;
+    }
+
+    #progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #22c55e, #0ea5e9);
+      transition: width 0.2s;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      opacity: 0.75;
+      margin-top: 4px;
+    }
+
+    .control-buttons {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .control-buttons button {
+      flex: 1;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    #toggle-btn {
+      background: #22c55e;
+      color: #052e16;
+      font-weight: 600;
+    }
+
+    #reset-btn {
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+
+    .control-buttons button:active {
+      transform: translateY(1px);
+    }
+
+    .note {
+      font-size: 11px;
+      text-align: center;
+      opacity: 0.65;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div class="timer-card">
+    <h1>타이머</h1>
+    <p class="subtitle">집중 · 쉬는 시간 연습용 타이머입니다. 텍스트를 바꿔서 자신만의 타이머로 꾸며보세요.</p>
+
+    <!-- 시간 프리셋 버튼 -->
+    <div class="preset-buttons">
+      <button data-minutes="15">15분</button>
+      <button data-minutes="20">20분</button>
+      <button data-minutes="30">30분</button>
+      <button data-minutes="40">40분</button>
+      <button data-minutes="50">50분</button>
+    </div>
+
+    <!-- 시간 표시 -->
+    <div class="time-display">
+      <div class="time-label" id="time-label">시간을 선택해 주세요</div>
+      <div id="time-text">--:--</div>
+    </div>
+
+    <!-- 진행 바 -->
+    <div class="progress-wrapper">
+      <div class="progress-back">
+        <div id="progress-bar"></div>
+      </div>
+      <div class="progress-info">
+        <span id="preset-info">총 0분</span>
+        <span id="remain-info">남은 0%</span>
+      </div>
+    </div>
+
+    <!-- 컨트롤 버튼 -->
+    <div class="control-buttons">
+      <button id="toggle-btn">시작</button>
+      <button id="reset-btn">리셋</button>
+    </div>
+
+    <p class="note">
+      ① 위에서 시간을 고르고 ② [시작]을 누르세요.<br>
+      [시작] 버튼은 다시 누르면 일시정지됩니다.
+    </p>
+  </div>
+
+  <script>
+    const presetButtons = document.querySelectorAll(".preset-buttons button");
+    const timeText = document.getElementById("time-text");
+    const timeLabel = document.getElementById("time-label");
+    const progressBar = document.getElementById("progress-bar");
+    const presetInfo = document.getElementById("preset-info");
+    const remainInfo = document.getElementById("remain-info");
+    const toggleBtn = document.getElementById("toggle-btn");
+    const resetBtn = document.getElementById("reset-btn");
+
+    let totalSeconds = 0;       // 전체 설정 시간(초)
+    let remainingSeconds = 0;   // 남은 시간(초)
+    let timerId = null;
+    let isRunning = false;
+
+    // 초 -> "MM:SS" 문자열 변환
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      const mm = String(m).padStart(2, "0");
+      const ss = String(s).padStart(2, "0");
+      return mm + ":" + ss;
+    }
+
+    function updateDisplay() {
+      if (totalSeconds === 0) {
+        timeText.textContent = "--:--";
+        presetInfo.textContent = "총 0분";
+        remainInfo.textContent = "남은 0%";
+        progressBar.style.width = "0%";
+        return;
+      }
+
+      timeText.textContent = formatTime(remainingSeconds);
+      const totalMin = Math.round(totalSeconds / 60);
+      presetInfo.textContent = "총 " + totalMin + "분";
+
+      const ratio = remainingSeconds / totalSeconds;
+      const percent = Math.round(ratio * 100);
+      remainInfo.textContent = "남은 " + percent + "%";
+      progressBar.style.width = (ratio * 100) + "%";
+    }
+
+    function setTimer(minutes) {
+      stopTimer();
+      totalSeconds = minutes * 60;
+      remainingSeconds = totalSeconds;
+      timeLabel.textContent = minutes + "분 타이머가 설정되었습니다.";
+      isRunning = false;
+      toggleBtn.textContent = "시작";
+      presetButtons.forEach(btn => btn.classList.remove("active"));
+      // 눌린 버튼에 active 스타일
+      presetButtons.forEach(btn => {
+        if (Number(btn.dataset.minutes) === minutes) {
+          btn.classList.add("active");
+        }
+      });
+      updateDisplay();
+    }
+
+    function startTimer() {
+      if (totalSeconds === 0) {
+        timeLabel.textContent = "먼저 위에서 시간을 선택해 주세요.";
+        return;
+      }
+      if (remainingSeconds <= 0) {
+        // 이미 끝난 상태라면 리셋 후 시작
+        remainingSeconds = totalSeconds;
+      }
+      if (isRunning) return;
+      isRunning = true;
+      toggleBtn.textContent = "일시정지";
+      timeLabel.textContent = "집중하는 중입니다...";
+
+      timerId = setInterval(() => {
+        remainingSeconds--;
+        if (remainingSeconds <= 0) {
+          remainingSeconds = 0;
+          updateDisplay();
+          stopTimer();
+          timeLabel.textContent = "타이머 종료! 수고했어요 👏";
+          alert("타이머가 끝났습니다! 잠깐 쉬어볼까요?");
+          return;
+        }
+        updateDisplay();
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      if (!isRunning) return;
+      stopTimer();
+      timeLabel.textContent = "일시정지 상태입니다.";
+    }
+
+    function stopTimer() {
+      isRunning = false;
+      toggleBtn.textContent = "시작";
+      if (timerId !== null) {
+        clearInterval(timerId);
+        timerId = null;
+      }
+    }
+
+    function resetTimer() {
+      if (totalSeconds === 0) {
+        remainingSeconds = 0;
+        updateDisplay();
+        timeLabel.textContent = "시간을 다시 선택해 주세요.";
+        return;
+      }
+      stopTimer();
+      remainingSeconds = totalSeconds;
+      updateDisplay();
+      timeLabel.textContent = "처음 상태로 리셋되었습니다.";
+    }
+
+    // 프리셋 버튼 클릭
+    presetButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const minutes = Number(btn.dataset.minutes);
+        setTimer(minutes);
+      });
+    });
+
+    // 시작/일시정지 버튼
+    toggleBtn.addEventListener("click", () => {
+      if (isRunning) {
+        pauseTimer();
+      } else {
+        startTimer();
+      }
+    });
+
+    // 리셋 버튼
+    resetBtn.addEventListener("click", resetTimer);
+
+    // 초기 상태 표시
+    updateDisplay();
+  </script>
+</body>
+</html>

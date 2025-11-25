@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>스크롤 진행 바 스토리 템플릿</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: sans-serif;
+      background: #020617;
+      color: #e5e7eb;
+    }
+
+    /* 진행 바 배경 */
+    #progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: #0f172a;
+      z-index: 20;
+    }
+
+    /* 실제 채워지는 바 */
+    #progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #22c55e, #0ea5e9);
+      transition: width 0.05s;
+    }
+
+    header {
+      padding: 20px 24px 12px;
+      margin-top: 10px;
+    }
+
+    header h1 {
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px 24px 80px;
+    }
+
+    section {
+      margin: 32px 0;
+      padding: 20px 22px;
+      border-radius: 16px;
+      background: #0f172a;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    section h2 {
+      margin-bottom: 6px;
+    }
+
+    section p {
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 4px 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="progress-container">
+    <div id="progress-bar"></div>
+  </div>
+
+  <header>
+    <h1>스크롤 진행 바 스토리 페이지 제목</h1>
+    <p>스크롤하면 상단 바가 채워지면서 “이야기의 어느 정도까지 읽었는지” 보여줍니다.</p>
+    <p>아이들이 각 섹션을 동화, 만화, 프로젝트 보고서 등으로 자유롭게 구성할 수 있습니다.</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>1장: 시작</h2>
+      <p>이 문장은 더미 텍스트입니다. 이야기의 시작 장면이나 프로젝트의 배경 설명을 적어보세요.</p>
+    </section>
+
+    <section>
+      <h2>2장: 사건 발생</h2>
+      <p>중간에 일어나는 사건이나, 해결해야 할 문제를 적는 구역입니다.</p>
+    </section>
+
+    <section>
+      <h2>3장: 도전</h2>
+      <p>주인공이 어떤 시도를 하는지, 어떤 과정을 거치는지 적어보세요.</p>
+    </section>
+
+    <section>
+      <h2>4장: 결말</h2>
+      <p>마지막 장면, 배운 점, 다음에 더 해보고 싶은 것들을 적습니다.</p>
+    </section>
+  </main>
+
+  <script>
+    const bar = document.getElementById("progress-bar");
+
+    function updateProgress() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.body.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      bar.style.width = progress + "%";
+    }
+
+    window.addEventListener("scroll", updateProgress);
+    updateProgress();
+  </script>
+</body>
+</html>

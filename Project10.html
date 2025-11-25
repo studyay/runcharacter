@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>오늘의 기분 선택 페이지 템플릿</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0f172a;
+      color: #e5e7eb;
+      transition: background 0.4s;
+    }
+
+    .card {
+      width: 360px;
+      max-width: 90vw;
+      background: rgba(15, 23, 42, 0.94);
+      border-radius: 18px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+      padding: 20px 22px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 6px;
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 4px 0;
+    }
+
+    .mood-buttons {
+      margin: 16px 0 10px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #1f2937;
+      color: #e5e7eb;
+      transition: transform 0.1s, background 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      background: #334155;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    #mood-title {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #mood-text {
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>오늘의 기분 선택 페이지 제목</h1>
+    <p>아래 버튼을 눌러 오늘의 기분을 선택해 보세요.</p>
+    <p>각 기분에 맞는 문장과 색을 직접 바꿔도 좋습니다.</p>
+
+    <div class="mood-buttons">
+      <button data-mood="happy">😊</button>
+      <button data-mood="calm">😌</button>
+      <button data-mood="tired">🥱</button>
+      <button data-mood="excited">🤩</button>
+    </div>
+
+    <div id="mood-title">기분 제목(여기에 표시됩니다)</div>
+    <div id="mood-text">아직 기분을 선택하지 않았어요. 버튼을 눌러보세요.</div>
+  </div>
+
+  <script>
+    const body = document.body;
+    const titleEl = document.getElementById("mood-title");
+    const textEl = document.getElementById("mood-text");
+
+    const moods = {
+      happy: {
+        bg: "linear-gradient(135deg, #22c55e, #16a34a)",
+        title: "오늘은 기분이 상큼한 날!",
+        text: "즐거운 일이 많이 생길 것 같은 예감이에요. 오늘 하고 싶은 일을 하나 정해보세요."
+      },
+      calm: {
+        bg: "linear-gradient(135deg, #0ea5e9, #1d4ed8)",
+        title: "잔잔하고 편안한 하루",
+        text: "천천히 숨을 쉬면서, 조용히 집중하는 시간을 보내보는 건 어떨까요?"
+      },
+      tired: {
+        bg: "linear-gradient(135deg, #4b5563, #020617)",
+        title: "조금 피곤한 날",
+        text: "오늘은 나를 너무 몰아붙이지 말고, 작은 목표 하나만 꼭 해내도 충분해요."
+      },
+      excited: {
+        bg: "linear-gradient(135deg, #f97316, #e11d48)",
+        title: "두근두근 신나는 날!",
+        text: "새로운 도전을 해보기 좋은 날이에요. 작은 프로젝트를 하나 시작해볼까요?"
+      }
+    };
+
+    document.querySelectorAll("button[data-mood]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const moodKey = btn.dataset.mood;
+        const mood = moods[moodKey];
+        if (!mood) return;
+
+        body.style.background = mood.bg;
+        titleEl.textContent = mood.title;
+        textEl.textContent = mood.text;
+      });
+    });
+  </script>
+</body>
+</html>

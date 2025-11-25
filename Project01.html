@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>나만의 미니 페이지</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* 스타일 파일: style.css */
+
+body {
+  margin: 0;
+  font-family: 'Pretendard', sans-serif;
+  background: #f5f5f5;
+  color: #333;
+}
+
+.hero {
+  text-align: center;
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #ffa740, #ff69b4);
+  color: white;
+}
+
+.title {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.cta {
+  background: white;
+  color: #ff6f61;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.profile {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+}
+
+.profile-img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.cards {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  padding: 40px 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  background: #333;
+  color: white;
+}
+
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <h1 class="title">나만의 페이지</h1>
+    <p class="subtitle">여기에 멋진 한 줄 소개를 넣어보세요!</p>
+    <button class="cta">더 알아보기</button>
+  </header>
+
+  <section class="profile">
+    <img src="https://placekitten.com/300/300" alt="이미지" class="profile-img" />
+    <h2>나를 소개합니다</h2>
+    <p>여기에 자기소개를 짧게 써보세요. 글자만 바꾸면 완성됩니다.</p>
+  </section>
+
+  <section class="cards">
+    <div class="card">
+      <h3>좋아하는 것 1</h3>
+      <p>여기에 내용을 적는 곳.</p>
+    </div>
+    <div class="card">
+      <h3>좋아하는 것 2</h3>
+      <p>여기에 내용을 적는 곳.</p>
+    </div>
+    <div class="card">
+      <h3>좋아하는 것 3</h3>
+      <p>여기에 내용을 적는 곳.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2025 My Page</p>
+  </footer>
+</body>
+</html>

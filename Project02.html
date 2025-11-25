@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>나의 갤러리</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Pretendard, sans-serif;
+      background: #fafafa;
+    }
+
+    header {
+      text-align: center;
+      padding: 50px 20px;
+      background: #222;
+      color: white;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      padding: 30px;
+    }
+
+    .item {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .item img {
+      width: 100%;
+      display: block;
+    }
+
+    .item p {
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>나의 그림 갤러리</h1>
+    <p>내가 만든 작품을 전시해보자!</p>
+  </header>
+
+  <section class="grid">
+    <div class="item">
+      <img src="https://placekitten.com/200/200">
+      <p>작품 제목 1</p>
+    </div>
+    <div class="item">
+      <img src="https://placekitten.com/201/200">
+      <p>작품 제목 2</p>
+    </div>
+    <div class="item">
+      <img src="https://placekitten.com/202/200">
+      <p>작품 제목 3</p>
+    </div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>랜덤 얼굴 생성기 템플릿</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #1e293b, #020617);
+      color: #e5e7eb;
+      padding: 24px;
+      transition: background 0.4s;
+    }
+
+    .card {
+      max-width: 420px;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 20px;
+      padding: 22px 24px 26px;
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.7);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      font-size: 22px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 3px 0;
+    }
+
+    #face {
+      margin: 12px 0;
+      font-size: 40px;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+
+    #desc {
+      font-size: 13px;
+      opacity: 0.85;
+      min-height: 20px;
+    }
+
+    #btn-face {
+      margin-top: 12px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: none;
+      background: #22c55e;
+      color: #052e16;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>랜덤 얼굴 페이지 제목</h1>
+    <p>버튼을 누를 때마다 얼굴과 배경이 바뀝니다.</p>
+    <p>아이들이 이모티콘과 설명 문장을 직접 채워 넣어도 재밌어요.</p>
+
+    <div id="face">( •_•)?</div>
+    <div id="desc">버튼을 눌러 새로운 얼굴을 소환해 보세요.</div>
+    <button id="btn-face">얼굴 바꾸기!</button>
+  </div>
+
+  <script>
+    const faceEl = document.getElementById("face");
+    const descEl = document.getElementById("desc");
+    const btnFace = document.getElementById("btn-face");
+
+    // 아이들이 바꿔도 되는 얼굴+설명 데이터
+    const faces = [
+      { face: "(๑˃̵ᴗ˂̵)و", text: "오늘은 승자의 얼굴입니다." },
+      { face: "(◕‿◕✿)", text: "뭔가 좋은 일이 생길 것 같은 얼굴." },
+      { face: "(╯°□°）╯︵ ┻━┻", text: "책상을 뒤집고 싶은 날… (실제로는 뒤집지 말기)" },
+      { face: "ᕙ( ᐛ )ᕗ", text: "자신감 200% 파워 얼굴." },
+      { face: "(｡•́︿•̀｡)", text: "조금 피곤한 날의 표정 같네요." },
+      { face: "(☞ﾟヮﾟ)☞ ☜(ﾟヮﾟ☜)", text: "왼쪽도 오른쪽도 다 멋있다!" }
+    ];
+
+    const bgColors = [
+      "linear-gradient(135deg, #22c55e, #16a34a)",
+      "linear-gradient(135deg, #0ea5e9, #1d4ed8)",
+      "linear-gradient(135deg, #f97316, #e11d48)",
+      "linear-gradient(135deg, #a855f7, #4c1d95)"
+    ];
+
+    function randomItem(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    btnFace.addEventListener("click", () => {
+      const f = randomItem(faces);
+      const bg = randomItem(bgColors);
+      faceEl.textContent = f.face;
+      descEl.textContent = f.text;
+      document.body.style.background = bg;
+    });
+  </script>
+</body>
+</html>

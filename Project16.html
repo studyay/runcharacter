@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>말이 많은 버튼 템플릿</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #e5e7eb;
+      padding: 24px;
+    }
+
+    .box {
+      max-width: 460px;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 20px;
+      padding: 24px 26px 32px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      font-size: 22px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 4px 0;
+    }
+
+    #talk-btn {
+      margin-top: 14px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: none;
+      background: #22c55e;
+      color: #052e16;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    #log {
+      margin-top: 14px;
+      font-size: 13px;
+      text-align: left;
+      max-height: 160px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .line {
+      margin: 2px 0;
+      padding: 4px 6px;
+      border-radius: 8px;
+      background: #020617;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>버튼이 나를 평가하는 페이지</h1>
+    <p>아래 버튼을 계속 눌러보세요.</p>
+    <p>버튼이 점점 솔직(?)해집니다. 텍스트는 아이들이 마음대로 바꿔도 됩니다.</p>
+
+    <button id="talk-btn">한 번 눌러볼래요?</button>
+    <div id="log"></div>
+  </div>
+
+  <script>
+    const btn = document.getElementById("talk-btn");
+    const log = document.getElementById("log");
+
+    // 아이들이 바꿔도 되는 버튼 멘트들
+    const comments = [
+      "오, 첫 클릭이에요. 어색하지만 반가워요.",
+      "또 눌렀네요? 혹시… 심심한가요?",
+      "세 번째 클릭… 저랑 꽤 친해졌다고 생각해도 되나요?",
+      "잠깐만요, 손가락은 안 아파요?",
+      "좋아요, 오늘은 클릭왕으로 임명합니다.",
+      "와, 진짜 끈기 있다. 개발자 체질일지도?",
+      "오케이, 인정. 이제 제가 졌어요.",
+      "이렇게까지 누르는 사람은 처음인데요…?",
+      "좋아요, 여기까지 왔으면 이 페이지는 이미 당신 것."
+    ];
+
+    let count = 0;
+
+    btn.addEventListener("click", () => {
+      count++;
+      const idx = Math.min(count - 1, comments.length - 1);
+      const line = document.createElement("div");
+      line.className = "line";
+      line.textContent = comments[idx];
+      log.appendChild(line);
+      log.scrollTop = log.scrollHeight;
+
+      btn.textContent = `지금까지 ${count}번 눌렀어요`;
+    });
+  </script>
+</body>
+</html>
